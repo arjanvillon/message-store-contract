@@ -1,5 +1,12 @@
 # Bootcamp hardhat project
 Update: added code for goerli testnet deployment
+Try in the console where you downloaded this project:
+```
+npm install
+npm i @openzeppelin/contracts
+npx hardhat compile
+npx hardhat test
+```
 ## exercises
 * update the test suite to work with the latest MessageStoreVulnerable.sol contract
 * use the included attacker.sol contract to test for _and fix_ the vulnerabiilty in MessageStoreVulnerable.sol
