@@ -1,14 +1,23 @@
 const { ethers } = require("hardhat");
 const { expect } = require("chai");
 
-describe("MessageStore", async function () {
+describe("MessageStore", function () {
   const initialMessage = "Hello world";
   const changedMessage = "Goodbye world";
 
-  const [owner, otherAccount] = await ethers.getSigners();
+  let account;
+  let messageStore;
 
-  const MessageStore = await ethers.getContractFactory("MessageStore");
-  const messageStore = await MessageStore.deploy(initialMessage, 1);
+  // before function runs once before the whole test function runs
+  before(async function () {
+    const [owner, otherAccount] = await ethers.getSigners();
+    // set the other account as the account to test the revertion of update data
+    account = otherAccount;
+
+    const MessageStore = await ethers.getContractFactory("MessageStore");
+    // update the messageStore to be the contract
+    messageStore = await MessageStore.deploy(initialMessage, 1);
+  });
 
   describe("Data tests", function () {
     it("Should return the correct data", async function () {
@@ -24,7 +33,7 @@ describe("MessageStore", async function () {
 
     it("Should not be able to update the data if not owner", async function () {
       await expect(
-        messageStore.connect(otherAccount).updateData(changedMessage)
+        messageStore.connect(account).updateData(changedMessage)
       ).to.be.revertedWith("Ownable: caller is not the owner");
     });
   });
